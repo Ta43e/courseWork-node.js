@@ -1,0 +1,39 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Добавляем эту строку, чтобы контакты располагались в столбик */
+    align-items: center;
+    justify-content: center;
+}
+ 
+ .card_User {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    flex-direction: row;
+    margin: 8px;
+    cursor: pointer;
+    width: 300px;
+    display: flex;
+}
+
+.image-container {
+    width: 100px; /* Размер изображения по вашему выбору */
+    height: 100px; /* Размер изображения по вашему выбору */
+    margin-right: 16px; /* Отступ справа между изображением и текстом */
+}
+
+.card_User img {
+    width: 100px; /* Размер изображения по вашему выбору */
+    height: 100px; /* Размер изображения по вашему выбору */
+    border-radius: 8px;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Растягиваем блок с информацией, чтобы он занимал оставшееся пространство */
+}
+
+

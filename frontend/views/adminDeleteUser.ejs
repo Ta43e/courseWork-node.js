@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/stylesProfile.css">
+</head>
+<body>
+    <header>
+        <%- include partials/header %>
+    </header>
+    <main class="container">
+        <img src="https://localhost:8080/<%= user.mainPhoto %>" alt="Profile Image" style=" object-fit: cover; width: 300px; height: 300px">
+        <div><strong>Name:</strong> <%= user.firstName %></div>
+        <div><strong>Age:</strong> <%= user.age %></div>
+        <div><strong>Location:</strong> <%= user.location %></div>
+        <div><strong>purpose:</strong> <%= user.purpose %></div>
+        <div>
+            <label for="reason">Select reason for deletion:</label>
+            <select id="reason" name="reason">
+                <option value="">Select a reason...</option>
+                <option value="inactive">Inactive account</option>
+                <option value="violated_terms">Violated terms of service</option>
+                <option value="duplicate_account">Duplicate account</option>
+            </select>
+        </div>
+        <div>
+            <button class="button" onclick="deleteUser('<%= user._id %>')">Удалить</button>
+        </div>
+    </main>
+    <script>
+        function deleteUser(userId) {
+        var reason = document.getElementById('reason').value;
+        if (reason) {
+            window.location.href = `/adminPanel/deleteUser/${userId}?reason=${reason}`;
+        } else {
+            alert('Please select a reason for deletion.');
+        }
+    }
+        function redirectToUser(endPoint, userId) {
+            window.location.href = `/${endPoint}/${userId}`;
+        }
+    </script>
+</body>
+</html>

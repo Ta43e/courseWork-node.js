@@ -1,0 +1,157 @@
+.container {
+	margin-top: 20px;
+	width: 100vw;
+	height: calc(100vh - 50px); /* Учитываем высоту нижнего меню */
+	top: 0;
+	left: 0;
+	display: block;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(101, 245, 245, 0.2);
+	border-radius: 10px;
+}
+
+.chat_container {
+	width: 100%;
+	height: calc(80vh - 100px); /* Учитываем высоту нижнего меню и уменьшаем высоту чата */
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background-color: #eff7f9; /* Изменен цвет фона чата */
+	overflow-y: auto; /* Добавлен скролл при необходимости */
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	animation: fadeIn 0.5s ease; /* Анимация появления сообщений */
+}
+
+.sent_message_container, .receive_message_container {
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	padding: 10px 20px;
+	border-radius: 10px;
+	margin: 5px 0;
+}
+
+.sent_message_container {
+	align-self: flex-end;
+	background-color: #0088cc; /* Изменен цвет фона отправленного сообщения */
+	color: white; /* Изменен цвет текста отправленного сообщения */
+}
+
+.receive_message_container {
+	align-self: flex-start;
+	background-color: #ffffff; /* Изменен цвет фона принятого сообщения */
+	color: #000000; /* Изменен цвет текста принятого сообщения */
+}
+
+.your_name, .receiver_name {
+	margin: 0;
+	font-size: 13px;
+	padding-bottom: 4px;
+	font-weight: bold;
+}
+
+.input_container {
+	display: flex;
+	width: 100%;
+	background-color: #ffffff; /* Изменен цвет фона поля ввода */
+	padding: 10px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	animation: slideUp 0.5s ease; /* Анимация появления поля ввода */
+}
+
+.input {
+	flex: 1;
+	height: 40px;
+	font-size: 16px;
+	outline: none;
+	border: none;
+	padding: 0 10px;
+	border-top: 2px solid #0088cc; /* Изменен цвет верхней границы поля ввода */
+	transition: border-color 0.3s ease; /* Анимация изменения цвета верхней границы */
+}
+
+.input:focus {
+	border-color: #005580; /* Изменен цвет верхней границы поля ввода при фокусе */
+}
+
+.button {
+	width: 100px;
+	background-color: #0088cc; /* Изменен цвет кнопки */
+	color: white;
+	outline: none;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	animation: pulse 1s infinite; /* Анимация пульсации кнопки */
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateY(-20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.01);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.avatar_container {
+	width: 100px; /* Устанавливаем ширину контейнера для аватара */
+	height: 100px; /* Устанавливаем высоту контейнера для аватара */
+	border-radius: 50%; /* Делаем контейнер круглым */
+	overflow: hidden; /* Скрываем лишнее, что выходит за границы круглого контейнера */
+	margin-right: 20px; /* Отступ справа от контейнера с аватаром */
+	margin-bottom: 10px;
+  }
+  
+  .user_avatar {
+	width: 100%; /* Заполняем полностью ширину контейнера */
+	height: 100%; /* Заполняем полностью высоту контейнера */
+	object-fit: cover; /* Масштабируем изображение, чтобы оно полностью заполнило контейнер */
+  }
+  
+  .user_info {
+	display: flex; /* Устанавливаем flex-контейнер */
+	align-items: center; /* Выравниваем элементы по вертикали */
+  }

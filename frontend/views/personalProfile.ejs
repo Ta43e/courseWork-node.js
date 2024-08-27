@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 5px #0069d9;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button:active {
+            background-color: #0056b3;
+            box-shadow: 0 3px #004d8a;
+            transform: translateY(2px);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        .edit-form {
+            animation-duration: 0.3s;
+            animation-timing-function: ease-in-out;
+        }
+
+        .slide-in {
+            animation-name: slideIn;
+        }
+
+        .slide-out {
+            animation-name: slideOut;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <%- include partials/header %>
+</header>
+<main >
+    <div class="container" >
+        <div class="row">
+            <div style="margin-left: 30px; margin-right: 30px;">
+                <img src="<%= currentUser.mainPhoto %>" alt="Profile Image" class="profile-image" >
+            </div>
+            <div>
+                <div><label for="firstName">Name:</label> <%= currentUser.firstName %></div>
+                <div><label for="age">Age:</label> <%= currentUser.age %></div>
+                <div><label for="location">Location:</label> <%= currentUser.location %></div>
+                <div><label for="purpose">Purpose:</label> <%= currentUser.purpose %></div>
+                <div><label for="description">Description:</label> <%= currentUser.description %></div>
+            </div>
+        </div>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 70%; margin: 100px 300px 40px 160px">
+            <ol class="carousel-indicators">
+                <% currentUser.photos.forEach(function(photo, index) { %>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>"></li>
+                <% }); %>
+            </ol>
+            <div class="carousel-inner">
+                <% currentUser.photos.forEach(function(photo, index) { %>
+                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <img src="https://localhost:8080/<%= photo %>" class="d-block w-100" alt="Photo">
+                    </div>
+                <% }); %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <!-- Кнопка для открытия/закрытия формы редактирования -->
+        <button id="editButton" class="btn btn-primary" style="margin-bottom: 10px">Edit Profile</button>
+
+        <!-- Форма редактирования (изначально скрыта) -->
+        <form id="editProfileForm" method="PUT" action="/profile" class="edit-form" style="display: none;">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" value="<%= currentUser.firstName %>" class="form-control">
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="<%= currentUser.age %>" class="form-control" min="18" max="100">
+
+            <label for="location">Location:</label>
+            <select id="location" name="location" class="form-control">
+                <option value="">Select Location</option>
+                <option value="RB" <%= currentUser.location === 'RB' ? 'selected' : '' %>>Беларусь 🇧🇾</option>
+                <option value="RU" <%= currentUser.location === 'RU' ? 'selected' : '' %>>Россия 🇷🇺</option>
+                <option value="UK" <%= currentUser.location === 'UK' ? 'selected' : '' %>>Украина 🇺🇦</option>
+            </select>
+            
+            <label for="purpose">Purpose:</label>
+            <select id="purpose" name="purpose" class="form-control">
+                <option value="Неважно" <%= currentUser.purpose[0] === 'Неважно' ? 'selected' : '' %>>Неважно</option>
+                <option value="Свидание" <%= currentUser.purpose[0] === 'Свидание' ? 'selected' : '' %>>Свидание</option>
+                <option value="Дружба" <%= currentUser.purpose[0] === 'Дружба' ? 'selected' : '' %>>Дружба</option>
+                <option value="Общение" <%= currentUser.purpose[0] === 'Общение' ? 'selected' : '' %>>Общение</option>
+                <option value="Чпоки-чпоки" <%= currentUser.purpose[0] === 'Чпоки-чпоки' ? 'selected' : '' %>>Флирт</option>
+            </select>
+            
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" value="<%= currentUser.description %>" class="form-control">
+
+            <div class="input-container">
+                <label for="mainPhoto">Main Photo:</label>
+                <input type="file" id="mainPhoto" name="mainPhoto" accept="image/*">
+            </div>
+            
+            <div class="input-container">
+                <label for="photos">Additional Photos:</label>
+                <input type="file" id="photos" name="photos" accept="image/*" multiple> 
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</main>
+<footer>
+    <%- include partials/footer %>
+</footer>
+<script>
+    function toggleEditForm() {
+        const editForm = document.getElementById('editProfileForm');
+        if (editForm.style.display === 'none') {
+            editForm.style.display = 'block';
+            editForm.classList.remove('slide-out');
+            editForm.classList.add('slide-in');
+        } else {
+            // Если форма отображается, скрываем ее с анимацией
+            editForm.classList.remove('slide-in');
+            editForm.classList.add('slide-out');
+            setTimeout(() => {
+                editForm.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    // Добавляем обработчик события на кнопку
+    document.getElementById('editButton').addEventListener('click', toggleEditForm);
+
+
+    function redirectToUser(endPoint, userId) {
+        window.location.href = `/${endPoint}/${userId}`;
+    }
+    document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+        // Получаем данные из формы
+        const formData = new FormData(this);
+
+        // Отправляем запрос на сервер
+        fetch(`/profile`, {
+            method: 'PUT',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Profile updated successfully');
+                    window.location.href = '/profile';
+                } else {
+                    console.error('Failed to update profile');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+            });
+    });
+</script>
+</body>
+</html>

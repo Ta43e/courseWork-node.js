@@ -1,0 +1,33 @@
+.card_User {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.image-container {
+    cursor: pointer;
+}
+
+
+.details {
+    padding: 15px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.button {
+    width: 48%;
+    height: 20px;
+}
+
+@media (max-width: 576px) {
+    .button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

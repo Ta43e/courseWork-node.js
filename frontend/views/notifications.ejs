@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/stylescontacts.css">
+    <style>
+        .active {
+            background-color: lightblue; /* Пример стиля для активной кнопки */
+        }
+        .container {
+            padding-top: 20px;
+        }
+
+        .card_User {
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 15vw;
+            height: 15vw;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .btn-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-group button {
+            margin-right: 10px;
+        }
+
+        .btn-group button:focus {
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <%- include partials/header %>
+</header>
+<main class="container">
+    <div class="filter-buttons btn-group">
+        <button id="unreadButton" onclick="showNotifications(false)" class="btn btn-primary active">Показать непрочитанные</button>
+        <button id="readButton" onclick="showNotifications(true)" class="btn btn-primary">Показать прочитанные</button>
+    </div>
+    <div id="notificationsContainer">
+        <% notifications.forEach(notification => { %>
+            <div class="card_User" data-status="<%= notification.status %>" id="<%= notification._id %>">
+                <div class="image-container" onclick="redirectToUser('checkNotification' ,'<%= notification._id %>')">
+                    <img src="<%= notification.mainPhoto %>" alt="Profile Image" class="img-thumbnail">
+                </div>
+                <div class="details" onclick="redirectToUser('users' ,'<%= notification._id %>')">
+                    <div><%= notification.message %></div>
+                </div>
+                <div >
+                    <button class="btn btn-danger mr-2" onclick="deleteNotification('<%= notification._id %>')">Delete</button>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</main>
+<footer>
+    <%- include partials/footer%>
+</footer>
+<script>
+    function redirectToUser(endPoint, notificationId) {
+        window.location.href = `/${endPoint}/${notificationId}`;
+    }
+
+    function deleteNotification(notificationId) {
+    fetch(`/notifications/${notificationId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete notification');
+        }
+        
+        // Удаление элемента из DOM после успешного выполнения запроса
+        var deletedNotification = document.getElementById(notificationId);
+        if (deletedNotification) {
+            deletedNotification.remove();
+        }
+
+        // Сохранение текущего состояния вкладок в localStorage
+        var currentTab = document.querySelector('.filter-buttons .active').id;
+        localStorage.setItem('currentTab', currentTab);
+    })
+    .catch(error => {
+        console.error('Error deleting notification:', error);
+    });
+}
+
+function showNotifications(status) {
+    var notifications = document.querySelectorAll('.card_User');
+    notifications.forEach(function(notification) {
+        if (notification.dataset.status === status.toString()) {
+            notification.style.display = 'block';
+        } else {
+            notification.style.display = 'none';
+        }
+    });
+
+    var activeButton = status ? document.getElementById("readButton") : document.getElementById("unreadButton");
+    var inactiveButton = status ? document.getElementById("unreadButton") : document.getElementById("readButton");
+    activeButton.classList.add("active");
+    inactiveButton.classList.remove("active");
+}
+
+window.onload = function() {
+    var currentTab = localStorage.getItem('currentTab');
+    if (currentTab) {
+        var activeButton = document.getElementById(currentTab);
+        var inactiveButton = currentTab === 'readButton' ? document.getElementById('unreadButton') : document.getElementById('readButton');
+        activeButton.classList.add('active');
+        inactiveButton.classList.remove('active');
+        showNotifications(currentTab === 'readButton');
+    } else {
+        showNotifications(false); // По умолчанию отображаем непрочитанные уведомления
+    }
+};
+</script>
+</body>
+</html>

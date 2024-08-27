@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO chat</title>
+  <link rel="stylesheet" href="/css/stylesChat.css">
+</head>
+
+<body>
+<script>
+  window.checkNotification = <%- JSON.stringify(checkNotification) %>;
+</script>
+<header>
+  <%- include partials/header %>
+</header>
+<main class="container">
+  <div class="user_info" onclick="redirectToUser('<%= contact._id %>')">
+    <div class="avatar_container">
+      <img src="https://localhost:8080/<%= contact.mainPhoto %>" alt="User Avatar" class="user_avatar">
+    </div>
+    <div class="user_details">
+      <p class="user_name"><%= contact.firstName %> </p>
+      <p class="user_age">Age: <%= contact.age %></p>
+    </div>
+  </div>
+  <div class="chat_container">
+    <div class="chat">
+      <div class="messages" id="messages">
+        <% chat.forEach(message => {
+          const timestamp = new Date(message.timestamp);
+          const formattedTimestamp = timestamp.toLocaleString();
+
+        if (String(message.sender) === String(currentUser._id)) { %>
+          <div class="sent_message_container">
+            <p class="your_name">You</p>
+            <p class="sent_message"><%= message.message %></p>
+            <p class="sent_message"><%= formattedTimestamp %></p>
+          </div>
+        <% } else { %>
+          <div class="receive_message_container">
+            <p class="receiver_name"><%= contact.firstName %></p>
+            <p class="sent_message"><%= message.message %></p>
+            <p class="sent_message"><%= formattedTimestamp %></p>
+          </div>
+        <% }
+        }); %>
+      </div>
+    </div>
+  </div>
+  <form class="input_container" id="form">
+    <input class="input" id="input" placeholder="Send message" />
+    <button class="button" type="submit">Send</button>
+  </form>
+</main>
+<footer>
+  <%- include partials/footer%>
+</footer>
+<script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
+<script>
+  window.chat = <%- JSON.stringify(chat) %>;
+  window.contact = <%- JSON.stringify(contact) %>;
+  window.currentUser = <%- JSON.stringify(currentUser) %>;
+</script>
+<script src="/js/script.js"></script>
+</body>
+</html>
+  

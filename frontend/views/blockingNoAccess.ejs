@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocking Page</title>
+    <link rel="stylesheet" href="/css/stylesBlocking.css">
+</head>
+<body>
+    <header>
+        <% include partials/header %>
+    </header>
+    
+    <main class="container">
+        <h2>You are blocked by this user</h2>
+        <img src="https://localhost:8080/<%= user.mainPhoto %>" alt="Blocked User Image">
+        <p>Name: <%= user.firstName %></p>
+        <p>Этот пользователь заблокировал Вас.</p>
+        <% if (blockingStatus) { %>
+            <button class="button" onclick="redirectToUser('unblock', '<%= user._id %>')">Разблокировать</button>
+        <% } else { %>
+            <button class="button" onclick="redirectToUser('block', '<%= user._id %>')">Заблокировать</button>
+        <% } %>
+        <a href="/">Return to Home</a>
+    </main>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+    <script>
+        function redirectToUser(endPoint, userId) {
+            window.location.href = `/${endPoint}/${userId}`;
+        }
+    </script>
+</body>
+</html>
